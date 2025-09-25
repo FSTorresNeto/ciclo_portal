@@ -2,7 +2,7 @@
 
 import { Command as CommandPrimitive } from "cmdk";
 import * as React from "react";
-import { cn } from "../../lib/utils";
+import { cn } from "../../utils/cn";
 import { MagnifyingGlass } from "../icons";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./dialog";
 import { Input } from "./input";

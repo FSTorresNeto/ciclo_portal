@@ -4,7 +4,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { useIsMobile } from "../../hooks/use-mobile";
-import { cn } from "../../lib/utils";
+import { cn } from "../../utils/cn";
 import { TaillessLineArrowShrinkHorizontal1 } from "../icons";
 import { Button } from "./button";
 import { Input } from "./input";

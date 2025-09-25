@@ -1,57 +1,39 @@
 import { z } from "zod";
-import { baseEntitySchema } from "~/modules/shared/data/base-entity";
-import { AuthStatus } from "~/modules/shared/data/base-status";
+import { userEntitySchema } from "~/modules/shared/entity/user";
 
-// Inputs
-
-export type AuthInput = {
-	login: string;
-	password: string;
-};
-
-export type RefreshJwtInput = {
-	userId: number;
-	login: string;
-};
-
-// Entity
-
-export const userSchema = baseEntitySchema.extend({
-	userId: z.number().int(),
-	profileId: z.number().int(),
-	companyId: z.number().int(),
+export const authInputSchema = z.object({
 	login: z.string(),
-	status: z.nativeEnum(AuthStatus),
-	loginAttempts: z.number().int(),
-	isFirstAccess: z.boolean(),
-	passwordAttempts: z.number().int(),
-	weeklyLimit: z.coerce.date(),
-	email: z.string().email(),
+	password: z.string(),
 });
+export type AuthInput = z.infer<typeof authInputSchema>;
 
-// Output
-
-export const authOutput = z.object({
-	token: z.string(),
-	user: userSchema,
+export const refreshJwtInputSchema = z.object({
+	userId: z.number().int(),
+	login: z.string(),
 });
-
-export const refreshJwtOutput = z.object({
-	token: z.string(),
-});
-
-export const refreshJwtOutputShema = z.object({
-	success: z.boolean(),
-	message: z.string().nullable(),
-	data: refreshJwtOutput,
-});
+export type RefreshJwtInput = z.infer<typeof refreshJwtInputSchema>;
 
 export const authOutputSchema = z.object({
+	token: z.string(),
+	user: userEntitySchema,
+});
+export type AuthOutput = z.infer<typeof authOutputSchema>;
+
+export const authResponseSchema = z.object({
 	success: z.boolean(),
 	message: z.string().nullable(),
-	data: authOutput,
+	data: authOutputSchema,
 });
+export type AuthResponse = z.infer<typeof authResponseSchema>;
 
-export type AuthOutput = z.infer<typeof authOutputSchema>;
-export type RefreshJwtOutput = z.infer<typeof refreshJwtOutputShema>;
-export type User = z.infer<typeof userSchema>;
+export const refreshJwtOutputSchema = z.object({
+	token: z.string(),
+});
+export type RefreshJwtOutput = z.infer<typeof refreshJwtOutputSchema>;
+
+export const refreshJwtResponseSchema = z.object({
+	success: z.boolean(),
+	message: z.string().nullable(),
+	data: refreshJwtOutputSchema,
+});
+export type RefreshJwtResponse = z.infer<typeof refreshJwtResponseSchema>;

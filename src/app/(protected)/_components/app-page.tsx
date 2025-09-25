@@ -1,4 +1,4 @@
-import { cn } from "~/modules/shared/lib/utils";
+import { cn } from "~/modules/shared/utils/cn";
 
 export function AppPage({ className, ...props }: React.ComponentProps<"div">) {
 	return <div className={cn("flex h-full flex-col gap-8", className)} {...props} />;

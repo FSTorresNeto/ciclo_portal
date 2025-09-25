@@ -2,7 +2,7 @@
 
 import { Badge } from "~/modules/shared/components/ui/badge";
 import { Skeleton } from "~/modules/shared/components/ui/skeleton";
-import { date } from "~/modules/shared/lib/date";
+import { date } from "~/modules/shared/utils/date";
 
 type FilterData = {
 	data: { label: string; value: number }[];
@@ -119,4 +119,3 @@ type ToDateFilterProps = {
 function ToDateFilter({ toDate }: ToDateFilterProps) {
 	return <Badge variant="info">Até: {date(toDate).format("DD/MM/YYYY")}</Badge>;
 }
-

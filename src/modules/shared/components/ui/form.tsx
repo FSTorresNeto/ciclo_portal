@@ -14,7 +14,7 @@ import {
 } from "react-hook-form";
 
 import { Label } from "~/modules/shared/components/ui/label";
-import { cn } from "../../lib/utils";
+import { cn } from "../../utils/cn";
 import { InformationCircle } from "../icons";
 import { Button } from "./button";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";

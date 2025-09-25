@@ -7,7 +7,7 @@ import { Clock, ClockAlert } from "lucide-react";
 import type { RefreshJwtInput } from "~/modules/auth/data/schema/auth.schema";
 import { Button } from "../../../modules/shared/components/ui/button";
 import { useRouter } from "next/navigation";
-import { useRefreshJwt } from "~/modules/auth/data/auth.queries";
+import { useRefreshJwt } from "~/modules/auth/data/auth.hooks";
 
 export function SessionExpirationDialog() {
 	const router = useRouter();
@@ -90,9 +90,9 @@ export function SessionExpirationDialog() {
 			const refreshed = await refreshJwtMutation.mutateAsync(input);
 
 			await update({
-				accessToken: refreshed.data.token,
+				accessToken: refreshed.token,
 				authResult: {
-					token: refreshed.data.token,
+					token: refreshed.token,
 				},
 				user: {
 					...session.user,
@@ -104,6 +104,7 @@ export function SessionExpirationDialog() {
 			setIsExpired(false);
 			setTimeLeft(-1);
 		} catch (error) {
+			console.error(error);
 		} finally {
 			setRenewing(false);
 		}

@@ -8,12 +8,12 @@ export function useRefreshJwt() {
 	const { data: session } = useSession();
 
 	return useMutation<RefreshJwtOutput, Error, RefreshJwtInput>({
-		mutationFn: (input) => {
+		mutationFn: async (input) => {
 			if (!session?.accessToken) throw new Error("Usuário não autenticado");
 			return new AuthApi().refreshJwt(input, session.accessToken);
 		},
 		onSuccess: (data) => {
-			queryClient.setQueryData(["delete-user"], data);
+			queryClient.setQueryData(["auth:refreshJwt"], data);
 		},
 	});
 }

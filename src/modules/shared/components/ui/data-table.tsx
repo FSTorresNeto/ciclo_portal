@@ -27,8 +27,8 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import { type DateRange } from "react-day-picker";
-import { cn } from "~/modules/shared/lib/utils";
-import { date } from "../../lib/date";
+import { cn } from "~/modules/shared/utils/cn";
+import { date } from "../../utils/date";
 import { CalendarMark, Eraser, Filter2 } from "../icons";
 import { Button, buttonVariants } from "./button";
 import { Calendar } from "./calendar";

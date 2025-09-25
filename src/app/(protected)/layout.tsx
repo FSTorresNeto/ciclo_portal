@@ -11,7 +11,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 			<AppSidebar />
 			<SidebarInset>
 				{children}
-				{/* <SessionExpirationDialog /> */}
+				<SessionExpirationDialog />
 			</SidebarInset>
 		</SidebarProvider>
 	);

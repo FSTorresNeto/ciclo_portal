@@ -1,9 +1,8 @@
 "use client";
 
-import { Award, Dock, IdCard, LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { Award, LayoutDashboard, Settings } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserGroup } from "~/modules/shared/components/icons";
 import {
 	Sidebar,
 	SidebarContent,
@@ -16,9 +15,7 @@ import {
 	SidebarMenuItem,
 	SidebarTrigger,
 } from "~/modules/shared/components/ui/sidebar";
-import { AppSidebarLogo } from "./app-sidebar-logo";
 import { Button } from "~/modules/shared/components/ui/button";
-import { signOut } from "next-auth/react";
 import { Label } from "~/modules/shared/components/ui/label";
 
 const items = [
@@ -62,8 +59,12 @@ const items = [
 export function AppSidebar() {
 	const pathname = usePathname();
 
-	const onConfigureApplication = async () => {};
-	const onUpgradeVersion = async () => {};
+	const onConfigureApplication = () => {
+		alert("não implementado");
+	};
+	const onUpgradeVersion = () => {
+		alert("não implementado");
+	};
 
 	return (
 		<Sidebar collapsible="icon" variant="inset">

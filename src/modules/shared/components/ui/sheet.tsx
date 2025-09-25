@@ -2,7 +2,7 @@
 
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
-import { cn } from "src/modules/shared/lib/utils";
+import { cn } from "~/modules/shared/utils/cn";
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
 	return <SheetPrimitive.Root data-slot="sheet" {...props} />;

@@ -3,7 +3,7 @@
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
-import { cn } from "../../lib/utils";
+import { cn } from "../../utils/cn";
 
 const avatarVariants = cva("aspect-square shrink-0 grow-0 relative flex", {
 	variants: {
