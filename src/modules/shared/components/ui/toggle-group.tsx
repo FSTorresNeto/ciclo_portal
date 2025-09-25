@@ -21,7 +21,7 @@ function ToggleGroup({
 			data-slot="toggle-group"
 			data-size={size}
 			className={cn(
-				"group/toggle-group bg-neutral-70 flex h-fit w-fit items-center rounded-full",
+				"group/toggle-group bg-card flex h-fit w-fit items-center rounded-full",
 				size === "default" ? "gap-1 p-1" : "gap-2 p-2",
 				className,
 			)}
@@ -47,6 +47,7 @@ function ToggleGroupItem({
 			className={cn(
 				toggleVariants({ size: context.size ?? size }),
 				"min-w-0 flex-1 shrink-0 focus:z-10 focus-visible:z-10",
+				"text-card-foreground data-[state=on]:bg-accent data-[state=on]:text-accent-foreground",
 				className,
 			)}
 			{...props}

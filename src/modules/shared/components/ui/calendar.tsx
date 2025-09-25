@@ -4,7 +4,7 @@ import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react
 import * as React from "react";
 import { type DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
 import { cn } from "../../lib/utils";
-import { Button, buttonVariants } from "./button";
+import { type Button, buttonVariants } from "./button";
 
 function Calendar({
 	className,
@@ -12,11 +12,15 @@ function Calendar({
 	showOutsideDays = true,
 	captionLayout = "label",
 	buttonVariant = "neutral",
+	buttonHierarchy = "secondary",
+	buttonSize = "iconSm",
 	formatters,
 	components,
 	...props
 }: React.ComponentProps<typeof DayPicker> & {
 	buttonVariant?: React.ComponentProps<typeof Button>["variant"];
+	buttonHierarchy?: React.ComponentProps<typeof Button>["hierarchy"];
+	buttonSize?: React.ComponentProps<typeof Button>["size"];
 }) {
 	const defaultClassNames = getDefaultClassNames();
 
@@ -40,12 +44,12 @@ function Calendar({
 				month: cn("flex w-full flex-col gap-4", defaultClassNames.month),
 				nav: cn("absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1", defaultClassNames.nav),
 				button_previous: cn(
-					buttonVariants({ variant: buttonVariant }),
+					buttonVariants({ variant: buttonVariant, size: buttonSize, hierarchy: buttonHierarchy }),
 					"size-(--cell-size) p-0 select-none aria-disabled:opacity-50",
 					defaultClassNames.button_previous,
 				),
 				button_next: cn(
-					buttonVariants({ variant: buttonVariant }),
+					buttonVariants({ variant: buttonVariant, size: buttonSize, hierarchy: buttonHierarchy }),
 					"size-(--cell-size) p-0 select-none aria-disabled:opacity-50",
 					defaultClassNames.button_next,
 				),
@@ -61,7 +65,7 @@ function Calendar({
 					"has-focus:border-ring border-input has-focus:ring-ring/50 relative rounded-md border shadow-xs has-focus:ring-[3px]",
 					defaultClassNames.dropdown_root,
 				),
-				dropdown: cn("absolute inset-0 opacity-0", defaultClassNames.dropdown),
+				dropdown: cn("bg-popover absolute inset-0 opacity-0", defaultClassNames.dropdown),
 				caption_label: cn(
 					"font-medium select-none",
 					captionLayout === "label"
@@ -127,18 +131,16 @@ function CalendarDayButton({ className, day, modifiers, ...props }: React.Compon
 	}, [modifiers.focused]);
 
 	return (
-		<Button
+		<button
 			ref={ref}
-			variant="neutral"
-			hierarchy="tertiary"
-			size="icon"
+			type="button"
 			data-day={day.date.toLocaleDateString()}
 			data-selected-single={modifiers.selected && !modifiers.range_start && !modifiers.range_end && !modifiers.range_middle}
 			data-range-start={modifiers.range_start}
 			data-range-end={modifiers.range_end}
 			data-range-middle={modifiers.range_middle}
 			className={cn(
-				"data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 dark:hover:text-accent-foreground flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md [&>span]:text-xs [&>span]:opacity-70",
+				"[>svg]:size-4 data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-middle=true]:bg-accent data-[range-middle=true]:text-accent-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground group-data-[focused=true]/day:border-ring group-data-[focused=true]/day:ring-ring/50 dark:hover:bg-muted dark:hover:text-accent typography-label-xs flex aspect-square size-auto w-full min-w-(--cell-size) cursor-pointer flex-col items-center justify-center gap-1 rounded-sm leading-none font-normal group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-[3px] data-[range-end=true]:rounded-md data-[range-end=true]:rounded-r-md data-[range-middle=true]:rounded-none data-[range-start=true]:rounded-md data-[range-start=true]:rounded-l-md [&>span]:text-xs [&>span]:opacity-70",
 				defaultClassNames.day,
 				className,
 			)}

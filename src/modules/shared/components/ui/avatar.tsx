@@ -14,14 +14,14 @@ const avatarVariants = cva("aspect-square shrink-0 grow-0 relative flex", {
 			sm: "size-12",
 			xs: "size-9",
 		},
-		format: {
+		shape: {
 			circle: "[&>img]:rounded-full [&>span]:rounded-full",
 			rounded: "[&>img]:rounded-2xl [&>span]:rounded-2xl",
 		},
 	},
 	defaultVariants: {
 		size: "default",
-		format: "circle",
+		shape: "circle",
 	},
 });
 type AvatarVariants = VariantProps<typeof avatarVariants>;
@@ -29,10 +29,10 @@ type AvatarVariants = VariantProps<typeof avatarVariants>;
 function Avatar({
 	className,
 	size = "default",
-	format = "circle",
+	shape = "circle",
 	...props
 }: React.ComponentProps<typeof AvatarPrimitive.Root> & AvatarVariants) {
-	return <AvatarPrimitive.Root data-slot="avatar" className={cn(avatarVariants({ size, format }), className)} {...props} />;
+	return <AvatarPrimitive.Root data-slot="avatar" className={cn(avatarVariants({ size, shape }), className)} {...props} />;
 }
 
 function AvatarImage({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Image>) {

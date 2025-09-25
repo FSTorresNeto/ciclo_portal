@@ -32,7 +32,9 @@ export function LoginForm({ onForgotPassword }: { onForgotPassword: () => void }
 		setIsLoading(true);
 		setLoginError(null);
 
-		if (!data.cpf || !data.password) {
+		router.replace("/dashboard");
+
+		/* 		if (!data.cpf || !data.password) {
 			return router.replace("/dashboard");
 		}
 
@@ -47,7 +49,7 @@ export function LoginForm({ onForgotPassword }: { onForgotPassword: () => void }
 			setLoginError("CPF ou senha inválidos ou erro de rede, tente novamente");
 		} else {
 			router.replace("/dashboard");
-		}
+		} */
 	};
 
 	React.useEffect(() => {

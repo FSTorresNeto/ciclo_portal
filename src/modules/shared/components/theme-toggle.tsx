@@ -3,7 +3,6 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import React from "react";
-import { isDefined } from "../lib/utils";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 
 export function ThemeModeToggle() {
@@ -12,9 +11,8 @@ export function ThemeModeToggle() {
 
 	React.useEffect(() => setMounted(true), []);
 
-	const handleThemeChange = (value?: string) => {
-		console.log("value", value);
-		if (!isDefined(value)) return;
+	const handleThemeChange = (value: string) => {
+		if (!value) return;
 		setTheme(value);
 	};
 

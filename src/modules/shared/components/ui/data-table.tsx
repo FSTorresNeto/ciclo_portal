@@ -29,6 +29,7 @@ import React, { useState } from "react";
 import { type DateRange } from "react-day-picker";
 import { cn } from "~/modules/shared/lib/utils";
 import { date } from "../../lib/date";
+import { CalendarMark, Eraser, Filter2 } from "../icons";
 import { Button, buttonVariants } from "./button";
 import { Calendar } from "./calendar";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "./dropdown-menu";
@@ -62,7 +63,7 @@ export function useDataTable<TData, TValue>({
 	manualSorting,
 	columnVisibility,
 	onColumnVisibilityChange,
-	pagination,
+	pagination = { pageIndex: 0, pageSize: DEFAULT_PAGE_SIZE },
 	onPaginationChange,
 	sorting,
 	onSortingChange,
@@ -79,10 +80,10 @@ export function useDataTable<TData, TValue>({
 		state: {
 			columnVisibility,
 			pagination,
-			sorting: sorting,
+			sorting,
 		},
-		pageCount: pageCount ?? 1,
-		rowCount: rowCount,
+		pageCount: pageCount,
+		rowCount: rowCount ?? 0,
 		onColumnVisibilityChange,
 		onPaginationChange,
 		onSortingChange,
@@ -100,64 +101,62 @@ type DataTableProps<TData> = {
 };
 export function DataTable<TData>({ table, className, onRowClick, isLoading, emptyContent }: DataTableProps<TData>) {
 	return (
-		<div className="min-w-max">
-			<Table className={className}>
-				<TableHeader>
-					{table.getHeaderGroups().map((headerGroup) => (
-						<TableRow key={headerGroup.id}>
-							{headerGroup.headers.map((header) => {
-								return (
-									<TableHead key={header.id}>
-										{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-									</TableHead>
-								);
-							})}
+		<Table className={className}>
+			<TableHeader>
+				{table.getHeaderGroups().map((headerGroup) => (
+					<TableRow key={headerGroup.id}>
+						{headerGroup.headers.map((header) => {
+							return (
+								<TableHead key={header.id}>
+									{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+								</TableHead>
+							);
+						})}
+					</TableRow>
+				))}
+			</TableHeader>
+			<TableBody>
+				{isLoading ? (
+					Array.from({ length: DEFAULT_PAGE_SIZE }).map((_, index) => (
+						<TableRow key={`skeleton-${index}`}>
+							{Array.from({
+								length: table.getVisibleFlatColumns().length,
+							}).map((_, cellIndex) => (
+								<TableCell key={`skeleton-cell-${cellIndex}`}>
+									<Skeleton className="h-4" />
+								</TableCell>
+							))}
 						</TableRow>
-					))}
-				</TableHeader>
-				<TableBody>
-					{isLoading ? (
-						Array.from({ length: DEFAULT_PAGE_SIZE }).map((_, index) => (
-							<TableRow key={`skeleton-${index}`}>
-								{Array.from({
-									length: table.getVisibleFlatColumns().length,
-								}).map((_, cellIndex) => (
-									<TableCell key={`skeleton-cell-${cellIndex}`}>
-										<Skeleton className="h-4" />
-									</TableCell>
-								))}
-							</TableRow>
-						))
-					) : table.getRowModel().rows?.length ? (
-						table.getRowModel().rows.map((row) => (
-							<TableRow
-								key={row.id}
-								data-state={row.getIsSelected() && "selected"}
-								onClick={() => onRowClick?.(row.original)}
-								className={onRowClick ? "cursor-pointer" : undefined}
-							>
-								{row.getVisibleCells().map((cell) => (
-									<TableCell
-										key={cell.id}
-										align="left"
-										data-column-size={cell.column.columnDef.size}
-										data-column-maxsize={cell.column.columnDef.maxSize}
-									>
-										{flexRender(cell.column.columnDef.cell, cell.getContext())}
-									</TableCell>
-								))}
-							</TableRow>
-						))
-					) : (
-						<TableRow>
-							<TableCell colSpan={table.getVisibleFlatColumns().length} className="text-center">
-								{emptyContent ?? "Nenhum resultado encontrado."}
-							</TableCell>
+					))
+				) : table.getRowModel().rows?.length ? (
+					table.getRowModel().rows.map((row) => (
+						<TableRow
+							key={row.id}
+							data-state={row.getIsSelected() && "selected"}
+							onClick={() => onRowClick?.(row.original)}
+							className={onRowClick ? "cursor-pointer" : undefined}
+						>
+							{row.getVisibleCells().map((cell) => (
+								<TableCell
+									key={cell.id}
+									align="left"
+									data-column-size={cell.column.columnDef.size}
+									data-column-maxsize={cell.column.columnDef.maxSize}
+								>
+									{flexRender(cell.column.columnDef.cell, cell.getContext())}
+								</TableCell>
+							))}
 						</TableRow>
-					)}
-				</TableBody>
-			</Table>
-		</div>
+					))
+				) : (
+					<TableRow>
+						<TableCell colSpan={table.getVisibleFlatColumns().length} className="text-center">
+							{emptyContent ?? "Nenhum resultado encontrado."}
+						</TableCell>
+					</TableRow>
+				)}
+			</TableBody>
+		</Table>
 	);
 }
 
@@ -168,6 +167,7 @@ type DataTablePaginationProps<TData> = {
 
 export function DataTablePagination<TData>({ table, className }: DataTablePaginationProps<TData>) {
 	const selectedRows = table.getFilteredSelectedRowModel().rows;
+
 	return (
 		<div
 			className={cn(
@@ -204,8 +204,8 @@ export function DataTablePagination<TData>({ table, className }: DataTablePagina
 					</Select>
 				</div> */}
 				<div className="flex items-center justify-center">
-					Página {table.getState().pagination.pageIndex}&nbsp;de&nbsp;
-					{table.getPageCount()}
+					Página {table.getState().pagination.pageIndex + 1}&nbsp;de&nbsp;
+					{Math.max(table.getPageCount(), 1)}
 				</div>
 				<div className="flex items-center space-x-2">
 					<Button
@@ -498,6 +498,41 @@ export function DataTableDateRangeFilter({ children, min, max, handleApply }: Da
 	);
 }
 
+type DataTableDateFilterProps = {
+	children?: React.ReactNode;
+	date: Date | undefined;
+	handleApply: (date: Date | undefined) => void;
+};
+
+export function DataTableDateFilter({ children, date, handleApply }: DataTableDateFilterProps) {
+	const [selectedDate, setSelectedDate] = useState<Date | undefined>(date);
+
+	React.useEffect(() => {
+		setSelectedDate(date);
+	}, [date]);
+
+	return (
+		<Popover>
+			<PopoverTrigger asChild>{children}</PopoverTrigger>
+			<PopoverContent align="end" className="flex w-64 flex-col gap-2.5 px-2.5 py-4">
+				<Input placeholder="DD/MM/AAAA" endIcon={<CalendarMark />} />
+				<Calendar className="p-0" mode="single" selected={selectedDate} onSelect={setSelectedDate} />
+				<Separator />
+				<div className="border-border grid grid-cols-2 gap-2">
+					<Button onMouseDown={() => handleApply(selectedDate)} size="sm" variant="neutral">
+						<Filter2 />
+						Filtar
+					</Button>
+					<Button onMouseDown={() => handleApply(undefined)} size="sm" variant="neutral" hierarchy="tertiary">
+						<Eraser />
+						Limpar
+					</Button>
+				</div>
+			</PopoverContent>
+		</Popover>
+	);
+}
+
 type DataTableSearchProps = {
 	value: string;
 	onChange: (value: string) => void;
@@ -505,15 +540,17 @@ type DataTableSearchProps = {
 	debounceMs?: number;
 	className?: string;
 	startIcon?: React.ReactNode;
+	endIcon?: React.ReactNode;
 };
 
 export function DataTableSearch({
 	value,
 	onChange,
 	placeholder = "Buscar...",
-	debounceMs = 500,
+	debounceMs = 300,
 	className,
 	startIcon,
+	endIcon,
 }: DataTableSearchProps) {
 	const [searchValue, setSearchValue] = useState(value);
 
@@ -536,7 +573,8 @@ export function DataTableSearch({
 			value={searchValue}
 			onChange={(e) => setSearchValue(e.target.value)}
 			className={className}
-			startIcon={startIcon ?? <Search />}
+			startIcon={startIcon === undefined ? <Search /> : startIcon}
+			endIcon={endIcon}
 		/>
 	);
 }
@@ -544,7 +582,7 @@ export function DataTableSearch({
 type DataTableContainerProps = React.HTMLAttributes<HTMLDivElement>;
 export function DataTableContainer({ className, ...props }: DataTableContainerProps) {
 	return (
-		<div className={cn("dark:bg-neutral-90 flex min-h-max flex-col overflow-x-auto rounded-2xl", className)} {...props}>
+		<div className={cn("bg-neutral-0 dark:bg-neutral-90 flex min-h-max flex-col overflow-x-auto rounded-2xl", className)} {...props}>
 			<div className="min-w-max">{props.children}</div>
 		</div>
 	);

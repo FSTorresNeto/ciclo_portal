@@ -90,26 +90,21 @@ export const authConfig = {
 		},
 
 		async session({ session, token }: { session: NextAuthSession; token: any }) {
-			// Atualiza accessToken e userCompanyId
 			session.accessToken = token.accessToken as string | undefined;
 			session.user.userCompanyId = token.userCompanyId as number;
 			session.user.login = token.login as string;
 
-			// Decodifica expiração do JWT para controlar SessionExpirationDialog
 			if (token.accessToken) {
 				try {
 					const decoded = jwtDecode<{ exp?: number }>(token.accessToken);
 					if (decoded.exp) {
-						// Define session.expires como string ISO compatível com NextAuth
 						session.expires = new Date(decoded.exp * 1000).toISOString();
 					}
 				} catch (err) {
 					console.warn("Não foi possível decodificar JWT:", err);
-					// Fallback: expira em 1 min
 					session.expires = new Date(Date.now() + 60 * 1000).toISOString();
 				}
 			} else {
-				// Fallback: expira em 1 min
 				session.expires = new Date(Date.now() + 60 * 1000).toISOString();
 			}
 

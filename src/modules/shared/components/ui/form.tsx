@@ -84,11 +84,6 @@ function FormItem({ className, ...props }: React.ComponentProps<"div">) {
 	);
 }
 
-/**
- * É uma label
- * @todo: Implementar dot vermelho quando campo for obrigatório
- * @returns
- */
 function FormLabel({ children, className, ...props }: React.ComponentProps<typeof LabelPrimitive.Root>) {
 	const { error, formItemId, required } = useFormField();
 
