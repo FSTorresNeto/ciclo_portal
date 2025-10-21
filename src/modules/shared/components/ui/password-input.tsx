@@ -18,7 +18,7 @@ export function PasswordInput(props: Omit<InputProps, "type" | "endIcon">) {
 						variant="neutral"
 						hierarchy="tertiary"
 						size="iconSm"
-						className="absolute top-1/2 right-1 size-10 -translate-y-1/2 [&>svg]:size-6"
+						className="absolute top-0 right-1 flex h-full items-center justify-center [&>svg]:size-6"
 						type="button"
 						onClick={() => setShowPassword(!showPassword)}
 					>

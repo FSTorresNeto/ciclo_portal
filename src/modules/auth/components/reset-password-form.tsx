@@ -20,16 +20,37 @@ export function ResetPasswordForm({ onBack }: { onBack: () => void }) {
 			cpf: "",
 			code: "",
 		},
+		mode: "onChange", // Validar ao digitar
 	});
 
 	const router = useRouter();
 
+	// Monitorar os valores do formulário
+	const cpfValue = form.watch("cpf");
+	const codeValue = form.watch("code");
+
+	// Verificar se o CPF é válido (tem 11 dígitos após remover não-numéricos)
+	const isCpfValid = cpfValue.replace(/\D/g, "").length === 11;
+
+	// Verificar se o código OTP está completo (4 dígitos)
+	const isCodeValid = codeValue?.length === 4;
+
 	const handleComplete = (value: string) => {
-		alert("valores " + value);
+		form.setValue("code", value);
 	};
 
-	const onSubmit = (_: FormSchema) => {
-		router.push("/");
+	const onSubmit = (data: FormSchema) => {
+		if (!hasUser) {
+			// Se estamos na etapa do CPF, mude para a etapa do código
+			if (isCpfValid) {
+				setHasUser(true);
+			}
+		} else {
+			// Se estamos na etapa do código, continue com a navegação
+			if (isCodeValid) {
+				router.push("/");
+			}
+		}
 	};
 
 	return (
@@ -47,12 +68,23 @@ export function ResetPasswordForm({ onBack }: { onBack: () => void }) {
 									<OTPInput
 										numberOfDigits={4}
 										value={field.value}
-										onChange={field.onChange}
+										onChange={(value) => {
+											field.onChange(value);
+											// Não precisamos chamar handleComplete aqui, pois a função onComplete faz isso
+										}}
 										onComplete={handleComplete}
 										autoFocus
 									/>
 								) : (
-									<Input placeholder="exemplo: 000.000.000-00" type="cpf" {...field} />
+									<Input
+										placeholder="exemplo: 000.000.000-00"
+										type="text"
+										{...field}
+										onChange={(e) => {
+											field.onChange(e);
+											form.trigger("cpf"); // Força revalidação do campo após alteração
+										}}
+									/>
 								)}
 							</FormControl>
 							<FormMessage />
@@ -61,23 +93,11 @@ export function ResetPasswordForm({ onBack }: { onBack: () => void }) {
 				/>
 				<div className="flex flex-col gap-8">
 					{hasUser ? (
-						<Button
-							size="lg"
-							type="submit"
-							onClick={() => {
-								setHasUser(true);
-							}}
-						>
+						<Button size="lg" type="submit" disabled={!isCodeValid || form.formState.isSubmitting}>
 							Enviar Solicitação
 						</Button>
 					) : (
-						<Button
-							size="lg"
-							type="submit"
-							onClick={() => {
-								setHasUser(true);
-							}}
-						>
+						<Button size="lg" type="submit" disabled={!isCpfValid || form.formState.isSubmitting}>
 							Solicitar recuperação de senha
 						</Button>
 					)}
@@ -115,10 +135,11 @@ export function ResetPasswordForm({ onBack }: { onBack: () => void }) {
 const formSchema = z.object({
 	cpf: z
 		.string({ required_error: "CPF é obrigatório" })
+		.min(1, { message: "CPF é obrigatório" })
 		.transform((val) => val.replace(/\D/g, ""))
 		.refine((val) => val.length === 11, {
 			message: "CPF deve conter 11 números",
 		}),
-	code: z.string({ required_error: "Token é obrigatório" }).min(1, { message: "Token é obrigatório" }).optional(),
+	code: z.string({ required_error: "Código é obrigatório" }).min(4, { message: "Código deve conter 4 dígitos" }).optional(),
 });
 type FormSchema = z.infer<typeof formSchema>;

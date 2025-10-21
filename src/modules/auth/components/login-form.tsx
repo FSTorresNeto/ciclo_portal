@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -11,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "~/modules/shared/components/ui/input";
 import { PasswordInput } from "~/modules/shared/components/ui/password-input";
 import { taxIdFormater } from "~/modules/shared/utils/formatter/taxId-formater";
+import { AuthApi } from "../data/auth.api";
 
 export function LoginForm({ onForgotPassword }: { onForgotPassword: () => void }) {
 	const router = useRouter();
@@ -36,18 +36,26 @@ export function LoginForm({ onForgotPassword }: { onForgotPassword: () => void }
 			return router.replace("/dashboard");
 		}
 
-		const result = await signIn("credentials", {
+		/* 		const result = await signIn("credentials", {
 			login: data.cpf,
 			password: data.password,
 			redirect: false,
+		}); */
+		/* 
+		const response = await new AuthApi().auth({
+			login: data.cpf,
+			password: data.password,
 		});
 
-		if (!result || result.error) {
+		console.log(response); */
+		/* 		if (!result || result.error) {
 			setIsLoading(false);
 			setLoginError("CPF ou senha inválidos ou erro de rede, tente novamente");
 		} else {
 			router.replace("/dashboard");
-		}
+		} */
+
+		router.replace("/dashboard");
 	};
 
 	React.useEffect(() => {
@@ -66,7 +74,7 @@ export function LoginForm({ onForgotPassword }: { onForgotPassword: () => void }
 							<FormLabel>CPF</FormLabel>
 							<FormControl>
 								<Input
-									placeholder="exemplo: 000.000.000-00"
+									placeholder="000.000.000-00"
 									type="text"
 									inputMode="numeric"
 									maxLength={14}

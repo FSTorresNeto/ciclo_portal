@@ -96,13 +96,7 @@ function FormLabel({ children, className, ...props }: React.ComponentProps<typeo
 			{...props}
 		>
 			{children}
-			{required && (
-				<span className="text-negative">
-					<svg width="6" height="6" viewBox="0 0 6 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<circle cx="3" cy="3" r="3" fill="currentColor" />
-					</svg>
-				</span>
-			)}
+			{required && <span className="text-negative">*</span>}
 		</Label>
 	);
 }
@@ -158,10 +152,10 @@ function FormInfo({ className, children, ...props }: React.ComponentProps<"butto
 				<Button
 					className={cn("size-5 [&>svg]:size-3.5", className)}
 					data-slot="form-info"
-					hierarchy="tertiary"
+					hierarchy="primary"
 					type="button"
 					size="iconSm"
-					variant="neutral"
+					variant="primary"
 					{...props}
 				>
 					<InformationCircle className="size-4" />

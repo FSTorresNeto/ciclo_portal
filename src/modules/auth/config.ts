@@ -3,7 +3,7 @@ import type { NextAuthConfig, DefaultSession, Session as NextAuthSession } from 
 import CredentialsProvider from "next-auth/providers/credentials";
 import { AuthApi } from "~/modules/auth/data/auth.api";
 import { jwtDecode } from "jwt-decode";
-import type { AccessLevel } from "../shared/enums/access-level";
+import util from "util";
 
 /**
  
@@ -16,9 +16,9 @@ declare module "next-auth" {
 			id: string;
 			login: string;
 			companyId: number;
-			acessLevel: AccessLevel;
-			position: string;
-			firebaseauth: string;
+			accessLevel?: string;
+			position?: string;
+			firebaseAuth?: string;
 		} & DefaultSession["user"];
 		accessToken?: string;
 	}
@@ -48,18 +48,21 @@ export const authConfig = {
 				try {
 					if (!credentials?.login || !credentials?.password) return null;
 
-					const response = await new AuthApi().login({
+					const response = await new AuthApi().auth({
 						login: credentials.login as string,
 						password: credentials.password as string,
 					});
 
-					if (!response?.user || !response?.token) return null;
+					if (!response?.data.user || !response?.data.token) return null;
 					return {
-						id: response.user.userId.toString(),
-						login: response.user.login,
+						email: response.data.user.email,
+						id: response.data.user.userId.toString(),
+						companyId: response.data.user.companyId,
+						userId: response.data.user.userId,
+						login: response.data.user.login,
 						image: null,
-						name: response.user.email,
-						accessToken: response.token,
+						name: response.data.user.email,
+						accessToken: response.data.token,
 					};
 				} catch (err) {
 					throw new Error("CONNECTION_ERROR");
@@ -71,31 +74,35 @@ export const authConfig = {
 		async jwt({ token, user, trigger, session }) {
 			if (user) {
 				token.accessToken = user.accessToken;
-				token.userId = (user as any).userId;
+				token.userId = (user as any).userId; // UserId do backend
+				token.companyId = (user as any).companyId; // CompanyId
 				token.login = (user as any).login;
-				token.companyId = (user as any).companyId;
-				token.acessLevel = (user as any).acessLevel;
-				token.position = (user as any).position;
-				token.firebaseauth = (user as any).firebaseauth;
+				token.accessLevel = (user as any).accessLevel; // AccessLevel
+				token.position = (user as any).position; // Cargo
+				token.firebaseAuth = (user as any).firebaseAuth; // FirebaseAuth
 			}
+
 			if (trigger === "update" && session?.accessToken) {
 				token.accessToken = session.accessToken;
-				token.userId = session.user?.userId ?? token.userId;
-				token.login = session.user?.login ?? token.login;
+				token.userId = session.user?.id ?? token.userId;
 				token.companyId = session.user?.companyId ?? token.companyId;
-				token.acessLevel = session.user?.acessLevel ?? token.acessLevel;
+				token.login = session.user?.login ?? token.login;
+				token.accessLevel = session.user?.accessLevel ?? token.accessLevel;
 				token.position = session.user?.position ?? token.position;
-				token.firebaseauth = session.user?.firebaseauth ?? token.firebaseauth;
+				token.firebaseAuth = session.user?.firebaseAuth ?? token.firebaseAuth;
 			}
 
 			return token;
 		},
 
 		async session({ session, token }: { session: NextAuthSession; token: any }) {
-			session.accessToken = token.accessToken as string | undefined;
-			session.user.login = token.login as string;
-			session.user.companyId = token.companyId as number;
-			session.user.firebaseauth = token.firebaseauth as string;
+			session.accessToken = token.accessToken;
+			session.user.id = token.userId;
+			session.user.companyId = token.companyId;
+			session.user.login = token.login;
+			session.user.accessLevel = token.accessLevel;
+			session.user.position = token.position;
+			session.user.firebaseAuth = token.firebaseAuth;
 
 			if (token.accessToken) {
 				try {

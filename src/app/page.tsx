@@ -18,16 +18,24 @@ export default function Page() {
 	};
 
 	return (
-		<div className="bg-background dark:bg-neutral-80">
-			<div className="mx-auto grid h-dvh w-dvw gap-6 p-6 xl:grid-cols-[2fr_1fr]">
-				<aside className="bg-muted relative hidden overflow-clip rounded-2xl xl:block">
-					<Image src="/homepage-background.webp" alt="Image" className="absolute inset-0 h-full w-full object-cover" fill />
+		<div className="bg-background dark:bg-neutral-80 min-h-screen">
+			<div className="grid h-dvh w-dvw xl:grid-cols-[2fr_1fr]">
+				<aside className="relative hidden xl:block">
+					<div className="relative h-full w-full">
+						<Image
+							src="/homepage-background.webp"
+							alt="Image"
+							fill
+							className="object-cover"
+							sizes="(max-width: 1280px) 50vw, 33vw"
+						/>
+					</div>
 				</aside>
 				<main className="bg-card text-card-foreground flex flex-col justify-center gap-8 rounded-2xl px-6 py-4 md:px-10 lg:px-16">
 					<div className="relative mb-20 h-[180px] w-full">
 						<Image src="/logo-owl.webp" alt="Image-Logo" className="object-contain" fill />
 					</div>
-					<h1 className="typography-display-sm">{step === "login" ? "Plataforma Ciclo" : ""}</h1>
+					<h1 className="typography-display-sm">{step === "login" ? "Plataforma" : ""}</h1>
 					{renderForm()}
 				</main>
 			</div>

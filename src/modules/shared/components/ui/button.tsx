@@ -8,7 +8,7 @@ import { cn } from "../../utils/cn";
 
 const buttonVariants = cva(
 	[
-		"inline-flex shrink-0 cursor-pointer border border-transparent min-w-12 items-center text-center justify-center gap-2 whitespace-nowrap rounded-full outline-none transition-all aria-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 active:ring-2 active:ring-foreground aria-disabled:pointer-events-none aria-disabled:text-muted-foreground aria-disabled:bg-muted-foreground/10 duration-100 overflow-hidden",
+		"inline-flex shrink-0 cursor-pointer border border-transparent min-w-12 items-center text-center justify-center gap-2 whitespace-nowrap rounded-full outline-none transition-all aria-disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 active:ring-2 active:ring-foreground aria-disabled:pointer-events-none aria-disabled:text-muted-foreground aria-disabled:bg-muted-foreground/10 duration-100 overflow-hidden text-white",
 		"data-[loading=true]:pointer-events-none data-[loading=true]:opacity-50",
 	],
 	{
@@ -42,8 +42,7 @@ const buttonVariants = cva(
 			{
 				variant: "primary",
 				hierarchy: "primary",
-				className:
-					"bg-primary text-primary-foreground hover:brightness-80 focus-visible:ring-secondary active:ring-primary-foreground",
+				className: "bg-primary text-white hover:brightness-80 focus-visible:ring-secondary active:ring-primary-foreground",
 			},
 			{
 				variant: "primary",

@@ -90,9 +90,9 @@ export function SessionExpirationDialog() {
 			const refreshed = await refreshJwtMutation.mutateAsync(input);
 
 			await update({
-				accessToken: refreshed.token,
+				accessToken: refreshed.data.token,
 				authResult: {
-					token: refreshed.token,
+					token: refreshed.data.token,
 				},
 				user: {
 					...session.user,

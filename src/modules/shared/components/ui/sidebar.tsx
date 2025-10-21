@@ -279,7 +279,10 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
 	return (
 		<main
 			data-slot="sidebar-inset"
-			className={cn("bg-background relative flex w-full flex-1 flex-col overflow-hidden overflow-y-auto rounded-2xl", className)}
+			className={cn(
+				"bg-background relative flex w-full flex-1 flex-col overflow-hidden overflow-y-auto rounded-2xl pt-20",
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -302,7 +305,7 @@ function SidebarHeader({ className, ...props }: React.ComponentProps<"div">) {
 		<div
 			data-slot="sidebar-header"
 			data-sidebar="header"
-			className={cn("flex flex-col gap-2", state === "collapsed" && "items-center", className)}
+			className={cn("bg-primary-50 flex flex-col gap-2", state === "collapsed" && "items-center", className)}
 			{...props}
 		/>
 	);

@@ -6,10 +6,6 @@
 	"scripts": {
 		"build": "next build",
 		"check": "next lint && tsc --noEmit",
-		"db:generate": "drizzle-kit generate",
-		"db:migrate": "drizzle-kit migrate",
-		"db:push": "drizzle-kit push",
-		"db:studio": "drizzle-kit studio",
 		"dev": "next dev --turbo",
 		"format": "prettier --write . --cache",
 		"lint": "next lint",
@@ -20,7 +16,6 @@
 		"generate-icons": "bun convert-svg-to-components.js"
 	},
 	"dependencies": {
-		"@auth/drizzle-adapter": "^1.7.2",
 		"@hookform/resolvers": "^5.1.1",
 		"@radix-ui/react-alert-dialog": "1.1.6",
 		"@radix-ui/react-avatar": "^1.1.10",
@@ -49,14 +44,12 @@
 		"date-fns": "^4.1.0",
 		"dayjs": "^1.11.13",
 		"dotenv": "^17.0.1",
-		"drizzle-orm": "^0.41.0",
 		"install": "^0.13.0",
 		"jwt-decode": "^4.0.0",
 		"lucide-react": "^0.525.0",
 		"next": "^15.3.5",
 		"next-auth": "5.0.0-beta.25",
 		"next-themes": "^0.4.6",
-		"postgres": "^3.4.4",
 		"radix-ui": "^1.4.3",
 		"react": "^19.1.0",
 		"react-day-picker": "^9.7.0",
@@ -75,10 +68,8 @@
 		"@types/node": "^20.14.10",
 		"@types/react": "^19.0.0",
 		"@types/react-dom": "^19.0.0",
-		"drizzle-kit": "^0.30.5",
 		"eslint": "^9.23.0",
 		"eslint-config-next": "^15.2.3",
-		"eslint-plugin-drizzle": "^0.2.3",
 		"postcss": "^8.5.3",
 		"prettier": "^3.5.3",
 		"prettier-plugin-tailwindcss": "^0.6.11",
@@ -91,3 +82,4 @@
 		"initVersion": "7.39.3"
 	}
 }
+

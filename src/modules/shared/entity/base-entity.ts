@@ -1,9 +1,19 @@
 import { z } from "zod";
 
 export const baseEntitySchema = z.object({
-	creationDate: z.coerce.date(),
-	updateDate: z.coerce.date(),
-	deletionDate: z.coerce.date().nullable(),
-	creationUserId: z.number().int(),
-	updateUserId: z.number().int(),
+	creationDate: z
+		.string()
+		.transform((val) => new Date(val))
+		.optional(),
+	updateDate: z
+		.string()
+		.transform((val) => new Date(val))
+		.optional(),
+	deletionDate: z
+		.string()
+		.nullable()
+		.transform((val) => (val ? new Date(val) : null))
+		.optional(),
+	creationUserId: z.number().optional(),
+	updateUserId: z.number().optional(),
 });

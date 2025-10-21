@@ -1,6 +1,6 @@
 "use client";
 
-import { Award, LayoutDashboard, Settings } from "lucide-react";
+import { Award, LayoutDashboard, Settings, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -67,13 +67,15 @@ export function AppSidebar() {
 	};
 
 	return (
-		<Sidebar collapsible="icon" variant="inset">
+		<Sidebar className="bg-card border-none shadow-sm">
 			<SidebarHeader className="w-full">
-				<div className="flex flex-row items-center gap-4">
-					<SidebarTrigger />
-					<div className="flex flex-col items-start gap-2">
-						<Label className="text-xl"> Ciclo </Label>
-						<Label> Programa de fidelidade </Label>
+				<div className="flex items-center gap-3 px-6 py-5">
+					<div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm">
+						<Sparkles className="h-6 w-6 text-white" />
+					</div>
+					<div>
+						<h1 className="text-lg font-bold text-white">Ciclo</h1>
+						<p className="text-xs text-white/80">Programa de Fidelidade</p>
 					</div>
 				</div>
 			</SidebarHeader>
