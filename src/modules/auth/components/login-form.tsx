@@ -11,6 +11,8 @@ import { Input } from "~/modules/shared/components/ui/input";
 import { PasswordInput } from "~/modules/shared/components/ui/password-input";
 import { taxIdFormater } from "~/modules/shared/utils/formatter/taxId-formater";
 import { AuthApi } from "../data/auth.api";
+import { signIn } from "next-auth/react";
+import { useGenericApiErrorMessage } from "~/modules/shared/hooks/use-generic-api-error-message";
 
 export function LoginForm({ onForgotPassword }: { onForgotPassword: () => void }) {
 	const router = useRouter();
@@ -27,35 +29,36 @@ export function LoginForm({ onForgotPassword }: { onForgotPassword: () => void }
 
 	const { watch } = form;
 	const { cpf, password } = watch();
+	const getApiErrorMessage = useGenericApiErrorMessage();
 
 	const onSubmit = async (data: FormSchema) => {
 		setIsLoading(true);
 		setLoginError(null);
 
-		if (!data.cpf || !data.password) {
-			return router.replace("/dashboard");
-		}
+		try {
+			const response = await new AuthApi().auth({
+				login: data.cpf,
+				password: data.password,
+			});
+			console.log(response);
 
-		/* 		const result = await signIn("credentials", {
-			login: data.cpf,
-			password: data.password,
-			redirect: false,
-		}); */
-		/* 
-		const response = await new AuthApi().auth({
-			login: data.cpf,
-			password: data.password,
-		});
+			const result = await signIn("credentials", {
+				login: data.cpf,
+				password: data.password,
+				redirect: false,
+			});
 
-		console.log(response); */
-		/* 		if (!result || result.error) {
+			console.log(response);
+			if (!result || result.error) {
+				setLoginError(getApiErrorMessage(result?.error));
+				setIsLoading(false);
+			} else {
+				router.replace("/dashboard");
+			}
+		} catch (err: any) {
+			setLoginError(getApiErrorMessage(err));
 			setIsLoading(false);
-			setLoginError("CPF ou senha inválidos ou erro de rede, tente novamente");
-		} else {
-			router.replace("/dashboard");
-		} */
-
-		router.replace("/dashboard");
+		}
 	};
 
 	React.useEffect(() => {
@@ -105,7 +108,7 @@ export function LoginForm({ onForgotPassword }: { onForgotPassword: () => void }
 					)}
 				/>
 
-				{loginError && <div className="text-red-70 rounded p-2 text-center text-sm font-medium">{loginError}</div>}
+				{loginError && <div className="rounded p-2 text-center text-sm font-medium text-red-500">{loginError}</div>}
 
 				<div className="flex flex-col gap-8">
 					<Button size="lg" type="submit" disabled={isLoading || cpf.length < 11 || password.length < 8}>

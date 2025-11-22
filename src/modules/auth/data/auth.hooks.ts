@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { AuthApi } from "~/modules/auth/data/auth.api";
-import type { RefreshJwtInput, RefreshJwtResponse } from "~/modules/auth/data/schema/auth.schema";
+import type { RefreshJwtInput, RefreshJwtResponse } from "~/modules/auth/data/schema/refresh-jwt.schema";
 
 export function useRefreshJwt() {
 	const queryClient = useQueryClient();

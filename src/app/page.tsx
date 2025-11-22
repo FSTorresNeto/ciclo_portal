@@ -35,7 +35,7 @@ export default function Page() {
 					<div className="relative mb-20 h-[180px] w-full">
 						<Image src="/logo-owl.webp" alt="Image-Logo" className="object-contain" fill />
 					</div>
-					<h1 className="typography-display-sm">{step === "login" ? "Plataforma" : ""}</h1>
+					<h1 className="typography-display-sm">{step === "login" ? "Ciclo" : ""}</h1>
 					{renderForm()}
 				</main>
 			</div>

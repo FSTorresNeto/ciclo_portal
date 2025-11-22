@@ -1,24 +1,16 @@
-/* eslint-disable */
 import type { NextAuthConfig, DefaultSession, Session as NextAuthSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { AuthApi } from "~/modules/auth/data/auth.api";
 import { jwtDecode } from "jwt-decode";
 import util from "util";
 
-/**
- 
-Module augmentation for next-auth types. Allows us to add custom properties to the session
-object and keep type safety.*
-@see https://next-auth.js.org/getting-started/typescript#module-augmentation*/
 declare module "next-auth" {
 	interface Session extends DefaultSession {
 		user: {
-			id: string;
-			login: string;
+			id: number;
+			userId: number;
 			companyId: number;
-			accessLevel?: string;
-			position?: string;
-			firebaseAuth?: string;
+			login: string;
 		} & DefaultSession["user"];
 		accessToken?: string;
 	}
@@ -28,11 +20,6 @@ declare module "next-auth" {
 	}
 }
 
-/**
- * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
- *
- * @see https://next-auth.js.org/configuration/options
- */
 export const authConfig = {
 	session: {
 		strategy: "jwt",
@@ -55,14 +42,15 @@ export const authConfig = {
 
 					if (!response?.data.user || !response?.data.token) return null;
 					return {
-						email: response.data.user.email,
-						id: response.data.user.userId.toString(),
+						email: response.data.userInformation.email,
+						id: response.data.user.id.toString(),
 						companyId: response.data.user.companyId,
-						userId: response.data.user.userId,
-						login: response.data.user.login,
+						login: response.data.user.cpf,
 						image: null,
-						name: response.data.user.email,
+						name: response.data.userInformation.name,
 						accessToken: response.data.token,
+						userId: response.data.user.id,
+						status: response.data.user.userStatus,
 					};
 				} catch (err) {
 					throw new Error("CONNECTION_ERROR");
@@ -74,35 +62,25 @@ export const authConfig = {
 		async jwt({ token, user, trigger, session }) {
 			if (user) {
 				token.accessToken = user.accessToken;
-				token.userId = (user as any).userId; // UserId do backend
-				token.companyId = (user as any).companyId; // CompanyId
+				token.companyId = (user as any).companyId;
+				token.userId = (user as any).userId;
 				token.login = (user as any).login;
-				token.accessLevel = (user as any).accessLevel; // AccessLevel
-				token.position = (user as any).position; // Cargo
-				token.firebaseAuth = (user as any).firebaseAuth; // FirebaseAuth
 			}
-
 			if (trigger === "update" && session?.accessToken) {
 				token.accessToken = session.accessToken;
-				token.userId = session.user?.id ?? token.userId;
 				token.companyId = session.user?.companyId ?? token.companyId;
+				token.userId = session.user?.userId ?? token.userId;
 				token.login = session.user?.login ?? token.login;
-				token.accessLevel = session.user?.accessLevel ?? token.accessLevel;
-				token.position = session.user?.position ?? token.position;
-				token.firebaseAuth = session.user?.firebaseAuth ?? token.firebaseAuth;
 			}
 
 			return token;
 		},
 
 		async session({ session, token }: { session: NextAuthSession; token: any }) {
-			session.accessToken = token.accessToken;
-			session.user.id = token.userId;
-			session.user.companyId = token.companyId;
-			session.user.login = token.login;
-			session.user.accessLevel = token.accessLevel;
-			session.user.position = token.position;
-			session.user.firebaseAuth = token.firebaseAuth;
+			session.accessToken = token.accessToken as string | undefined;
+			session.user.companyId = token.companyId as number;
+			session.user.userId = token.userId as number;
+			session.user.login = token.login as string;
 
 			if (token.accessToken) {
 				try {
@@ -111,6 +89,7 @@ export const authConfig = {
 						session.expires = new Date(decoded.exp * 1000).toISOString();
 					}
 				} catch (err) {
+					console.warn("Não foi possível decodificar JWT:", err);
 					session.expires = new Date(Date.now() + 60 * 1000).toISOString();
 				}
 			} else {

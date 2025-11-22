@@ -4,12 +4,12 @@ import { UserStatus } from "../enums/user-status";
 import { AccessLevel } from "../enums/access-level";
 
 export const userEntitySchema = baseEntitySchema.extend({
-	userId: z.number().int(),
-	login: z.string(),
+	id: z.number().int(),
+	cpf: z.string(),
 	name: z.string().optional(),
 	email: z.string().email().optional(),
 	passwordHash: z.string().optional(),
-	status: z.nativeEnum(UserStatus),
+	userStatus: z.nativeEnum(UserStatus),
 	accessLevel: z.nativeEnum(AccessLevel),
 	loginAttempts: z.number().int().optional(),
 	passwordAttempts: z.number().int().optional(),
