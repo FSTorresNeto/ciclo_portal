@@ -13,7 +13,6 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-	SidebarTrigger,
 } from "~/modules/shared/components/ui/sidebar";
 import { Button } from "~/modules/shared/components/ui/button";
 import { Label } from "~/modules/shared/components/ui/label";
@@ -25,33 +24,38 @@ const items = [
 		icon: LayoutDashboard,
 	},
 	{
-		title: "Programa de Pontos",
+		title: "Dashboard",
 		url: "/dashboard",
+		icon: LayoutDashboard,
+	},
+	{
+		title: "Programa de Pontos",
+		url: "/programs-of-points",
 		icon: LayoutDashboard,
 	},
 	{
 		title: "Beneficiários",
-		url: "/dashboard",
+		url: "/beneficiaries",
 		icon: LayoutDashboard,
 	},
 	{
 		title: "Pontuação",
-		url: "/dashboard",
+		url: "/points",
 		icon: LayoutDashboard,
 	},
 	{
 		title: "Recompensas",
-		url: "/dashboard",
+		url: "/rewards",
 		icon: LayoutDashboard,
 	},
 	{
 		title: "Extrato de pontos",
-		url: "/dashboard",
+		url: "/points-statement",
 		icon: LayoutDashboard,
 	},
 	{
 		title: "Programas Arquivados",
-		url: "/dashboard",
+		url: "/archived-programs",
 		icon: LayoutDashboard,
 	},
 ];

@@ -1,7 +1,7 @@
 import { cn } from "~/modules/shared/utils/cn";
 
 export function AppPage({ className, ...props }: React.ComponentProps<"div">) {
-	return <div className={cn("flex h-full flex-col gap-8", className)} {...props} />;
+	return <div className={cn("flex h-full flex-col", className)} {...props} />;
 }
 
 export function AppPageHeader({ className, ...props }: React.ComponentProps<"head">) {

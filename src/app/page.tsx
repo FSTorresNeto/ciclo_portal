@@ -27,7 +27,7 @@ export default function Page() {
 							alt="Image"
 							fill
 							className="object-cover"
-							sizes="(max-width: 1280px) 50vw, 33vw"
+							sizes="(max-width: 1220px) 50vw, 33vw"
 						/>
 					</div>
 				</aside>

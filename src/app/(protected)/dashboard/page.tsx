@@ -7,9 +7,9 @@ import { AppPage, AppPageHeader, AppPageHeaderTitleContainer, AppPageTitle } fro
 export default function DashboardPage() {
 	return (
 		<AppPage>
-			<AppPageHeader className="flex justify-between gap-6">
+			<AppPageHeader className="flex justify-between">
 				<AppPageHeaderTitleContainer>
-					<AppPageTitle>Página principal</AppPageTitle>
+					<AppPageTitle>Página </AppPageTitle>
 				</AppPageHeaderTitleContainer>
 				<Suspense>
 					<ThemeModeToggle />

@@ -48,15 +48,6 @@ export function AppTopbar() {
 			return routeTitles[pathname];
 		}
 
-		// Se não encontrar exata, procura por correspondência parcial
-		/* 		if (pathname) {
-			for (const route in routeTitles) {
-				if (pathname.startsWith(route) && route !== '/') {
-					return routeTitles[route];
-				}
-			}
-		} */
-
 		// Fallback para um título genérico
 		return { title: "Ciclo", subtitle: "Programa de Fidelidade" };
 	};

@@ -4,7 +4,6 @@ import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { differenceInSeconds } from "date-fns";
 import { Clock, ClockAlert } from "lucide-react";
-import type { RefreshJwtInput } from "~/modules/auth/data/schema/auth.schema";
 import { Button } from "../../../modules/shared/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useRefreshJwt } from "~/modules/auth/data/auth.hooks";
@@ -72,43 +71,7 @@ export function SessionExpirationDialog() {
 		};
 	}, []);
 
-	async function handleRenewSession() {
-		console.log(session);
-		const userId = Number(session?.user.id);
-		if (!session?.accessToken || !userId) {
-			return;
-		}
-
-		const input: RefreshJwtInput = {
-			userId: userId,
-			login: session.user.login,
-		};
-
-		try {
-			setRenewing(true);
-
-			const refreshed = await refreshJwtMutation.mutateAsync(input);
-
-			await update({
-				accessToken: refreshed.data.token,
-				authResult: {
-					token: refreshed.data.token,
-				},
-				user: {
-					...session.user,
-				},
-			});
-
-			setVisible(false);
-			setIsExpiring(false);
-			setIsExpired(false);
-			setTimeLeft(-1);
-		} catch (error) {
-			console.error(error);
-		} finally {
-			setRenewing(false);
-		}
-	}
+	async function handleRenewSession() {}
 
 	async function handleLogout() {
 		await signOut({ callbackUrl: "/" });

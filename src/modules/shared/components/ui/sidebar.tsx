@@ -279,10 +279,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
 	return (
 		<main
 			data-slot="sidebar-inset"
-			className={cn(
-				"bg-background relative flex w-full flex-1 flex-col overflow-hidden overflow-y-auto rounded-2xl pt-20",
-				className,
-			)}
+			className={cn("bg-sidebar relative flex w-full flex-1 flex-col overflow-hidden overflow-y-auto rounded-2xl pt-20", className)}
 			{...props}
 		/>
 	);
@@ -394,7 +391,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 			data-sidebar="menu-item"
 			className={cn(
 				"group/menu-item relative",
-				"group-data-[state=collapsed]:flex group-data-[state=collapsed]:justify-center",
+				"rad px-4 group-data-[state=collapsed]:flex group-data-[state=collapsed]:justify-center",
 				className,
 			)}
 			{...props}
@@ -404,7 +401,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 
 const sidebarMenuButtonVariants = cva(
 	[
-		"peer/menu-button flex w-full items-center gap-2 overflow-hidden rounded-lg py-2 px-4 text-left typography-label-md outline-hidden ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-data-[sidebar=menu-action]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-primary data-[active=true]:text-sidebar-primary-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:size-13! group-data-[collapsible=icon]:p-0! group-data-[collapsible=icon]:justify-center! group-data-[collapsible=icon]:[&>span:last-child]:hidden [&>span:last-child]:truncate [&>svg]:size-5 [&>svg]:shrink-0 duration-100",
+		"flex w-full items-center gap-2 overflow-hidden rounded-lg py-2 px-4 text-left typography-label-md bg-transparent active:bg-sidebar-accent",
 	],
 	{
 		variants: {
@@ -448,7 +445,11 @@ function SidebarMenuButton({
 			data-sidebar="menu-button"
 			data-size={size}
 			data-active={isActive}
-			className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+			className={cn(
+				sidebarMenuButtonVariants({ variant, size }),
+				isActive && "bg-sidebar-accent text-sidebar-accent-foreground hover:bg-sidebar-accent active:bg-sidebar-accent",
+				className,
+			)}
 			{...props}
 		/>
 	);

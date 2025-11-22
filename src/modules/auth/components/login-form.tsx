@@ -65,6 +65,13 @@ export function LoginForm({ onForgotPassword }: { onForgotPassword: () => void }
 		router.prefetch("/dashboard");
 	}, [router]);
 
+	React.useEffect(() => {
+		if (loginError) {
+			const timer = setTimeout(() => setLoginError(null), 4000);
+			return () => clearTimeout(timer);
+		}
+	}, [loginError]);
+
 	return (
 		<Form {...form}>
 			<form className="space-y-6 py-8" onSubmit={form.handleSubmit(onSubmit)}>
