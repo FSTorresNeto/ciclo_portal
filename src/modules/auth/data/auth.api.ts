@@ -1,7 +1,7 @@
 import { BaseApi } from "~/modules/shared/api/base.api";
 import { type AuthInput, type AuthResponse, authResponseSchema } from "./schema/auth.schema";
 import { type RefreshJwtInput, type RefreshJwtResponse, refreshJwtResponseSchema } from "./schema/refresh-jwt.schema";
-import { errorValidator } from "./schema/error.schema";
+import { errorValidator } from "../../shared/hooks/generic-error-response";
 import { env } from "~/env";
 
 export class AuthApi extends BaseApi {
