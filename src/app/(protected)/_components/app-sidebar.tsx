@@ -70,6 +70,11 @@ export function AppSidebar() {
 		alert("não implementado");
 	};
 
+	const isActive = (url: string) => {
+		if (pathname === url) return true;
+		return pathname.startsWith(url + "/");
+	};
+
 	return (
 		<Sidebar className="bg-card border-none shadow-sm">
 			<SidebarHeader className="w-full">
@@ -89,7 +94,7 @@ export function AppSidebar() {
 						<SidebarMenu>
 							{items.map((item) => (
 								<SidebarMenuItem key={item.title}>
-									<SidebarMenuButton isActive={pathname.startsWith(item.url)} asChild>
+									<SidebarMenuButton isActive={isActive(item.url)} asChild>
 										<Link href={item.url}>
 											<item.icon />
 											<span>{item.title}</span>
