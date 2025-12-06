@@ -33,7 +33,7 @@ export default function Page() {
 				</aside>
 				<main className="bg-card text-card-foreground flex flex-col justify-center gap-8 rounded-2xl px-6 py-4 md:px-10 lg:px-16">
 					<div className="relative mb-20 h-[180px] w-full">
-						<Image src="/logo-owl.webp" alt="Image-Logo" className="object-contain" fill />
+						<Image src="/logo-ciclo.webp" alt="Image-Logo" className="object-contain" fill />
 					</div>
 					<h1 className="typography-display-sm">{step === "login" ? "Ciclo" : ""}</h1>
 					{renderForm()}

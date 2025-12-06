@@ -2,7 +2,7 @@
 
 import { Menu } from "lucide-react";
 import { Topbar, TopbarStart, TopbarEnd } from "~/modules/shared/components/ui/topbar";
-import { SidebarTrigger } from "~/modules/shared/components/ui/sidebar";
+import { SidebarTrigger, useSidebar } from "~/modules/shared/components/ui/sidebar";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "~/modules/shared/components/theme-toggle";
 
@@ -10,69 +10,73 @@ import { ThemeToggle } from "~/modules/shared/components/theme-toggle";
 const routeTitles: Record<string, { title: string; subtitle: string }> = {
 	"/pdv": {
 		title: "PDV Fidelidade",
-		subtitle: "Gerencie transações do ponto de venda",
+		subtitle: "Sistema de operações para acúmulo e resgate de pontos",
 	},
 	"/dashboard": {
-		title: "Painel de Controle",
-		subtitle: "Visão geral do programa de fidelidade",
+		title: "Dashboard",
+		subtitle: "Visão geral do seu programa de fidelidade",
+	},
+	"/programa-de-pontos": {
+		title: "Programas de Pontos",
+		subtitle: "Gerencie seu programa de fidelidade",
 	},
 	"/beneficiarios": {
 		title: "Beneficiários",
-		subtitle: "Gerencie usuários do programa",
+		subtitle: "Gerencie seu programa de fidelidade",
 	},
-	"/pontuacao": {
+	"/pontuação": {
 		title: "Pontuação",
-		subtitle: "Regras e atribuição de pontos",
+		subtitle: "Gerencie seu programa de fidelidade",
 	},
 	"/recompensas": {
 		title: "Recompensas",
-		subtitle: "Gerenciamento de prêmios e resgate",
+		subtitle: "Gerencie seu programa de fidelidade",
 	},
 	"/extrato": {
 		title: "Extrato de Pontos",
-		subtitle: "Histórico de transações de pontos",
+		subtitle: "Gerencie seu programa de fidelidade",
 	},
 	"/arquivados": {
 		title: "Programas Arquivados",
-		subtitle: "Programas de fidelidade inativos",
+		subtitle: "Gerencie seu programa de fidelidade",
 	},
 };
 
 export function AppTopbar() {
 	const pathname = usePathname();
+	const { state } = useSidebar();
 
-	// Determina o título baseado na rota atual
 	const getPageInfo = (): { title: string; subtitle: string } => {
-		// Tentar encontrar uma correspondência exata
 		if (pathname && routeTitles[pathname]) {
 			return routeTitles[pathname];
 		}
 
-		// Fallback para um título genérico
 		return { title: "Ciclo", subtitle: "Programa de Fidelidade" };
 	};
 
 	const pageInfo = getPageInfo();
 
 	return (
-		// fixed across the top; on large screens leave space for the sidebar by using left offset
-		<div className="fixed inset-x-0 top-0 z-30 lg:right-0 lg:left-[var(--sidebar-width)]">
-			<Topbar className="w-full">
+		<div
+			className="fixed inset-x-0 top-0 z-30 transition-all duration-100 lg:p-0"
+			style={{
+				left: state === "collapsed" ? "0" : "var(--sidebar-width)",
+			}}
+			data-state={state}
+		>
+			<Topbar className="h-full w-full bg-[#262626]">
 				<TopbarStart>
-					{/* Botão para abrir/fechar sidebar, visível em todas as telas */}
 					<SidebarTrigger>
-						<Menu className="h-5 w-5" />
+						<Menu className="h-20 w-20" />
 					</SidebarTrigger>
 
-					{/* Título e subtítulo da página atual */}
 					<div className="ml-3 flex flex-col">
-						<h1 className="text-lg font-bold">{"pageInfo.title"}</h1>
-						<p className="text-muted-foreground text-xs">{"pageInfo.subtitle"}</p>
+						<h1 className="text-lg font-bold">{pageInfo.title}</h1>
+						<p className="text-muted-foreground text-xs">{pageInfo.subtitle}</p>
 					</div>
 				</TopbarStart>
 
 				<TopbarEnd>
-					{/* Botão para alternar entre tema claro/escuro */}
 					<ThemeToggle />
 				</TopbarEnd>
 			</Topbar>

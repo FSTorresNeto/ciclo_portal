@@ -1,6 +1,5 @@
 "use client";
 
-import { Award, LayoutDashboard, Settings, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -16,47 +15,48 @@ import {
 } from "~/modules/shared/components/ui/sidebar";
 import { Button } from "~/modules/shared/components/ui/button";
 import { Label } from "~/modules/shared/components/ui/label";
+import { Award, Settings, Sparkles, ShoppingCart, ChartColumn, Users, Archive, CreditCard, FileText, Gift } from "lucide-react";
 
 const items = [
 	{
 		title: "PDV Fidelidade",
 		url: "/pdv",
-		icon: LayoutDashboard,
+		icon: ShoppingCart,
 	},
 	{
 		title: "Dashboard",
 		url: "/dashboard",
-		icon: LayoutDashboard,
+		icon: ChartColumn,
 	},
 	{
 		title: "Programa de Pontos",
 		url: "/programs-of-points",
-		icon: LayoutDashboard,
+		icon: Award,
 	},
 	{
 		title: "Beneficiários",
 		url: "/beneficiaries",
-		icon: LayoutDashboard,
+		icon: Users,
 	},
 	{
 		title: "Pontuação",
 		url: "/points",
-		icon: LayoutDashboard,
+		icon: CreditCard,
 	},
 	{
 		title: "Recompensas",
 		url: "/rewards",
-		icon: LayoutDashboard,
+		icon: Gift,
 	},
 	{
 		title: "Extrato de pontos",
 		url: "/points-statement",
-		icon: LayoutDashboard,
+		icon: FileText,
 	},
 	{
 		title: "Programas Arquivados",
 		url: "/archived-programs",
-		icon: LayoutDashboard,
+		icon: Archive,
 	},
 ];
 
@@ -101,16 +101,16 @@ export function AppSidebar() {
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
-			<SidebarFooter>
-				<div className="flex min-h-[120px] min-w-[250px] flex-col gap-4 rounded-lg border border-white p-5">
+			<SidebarFooter className="p-5">
+				<div className="flex min-h-[120px] min-w-[250px] flex-col gap-4 rounded-lg border border-white bg-[#242323] p-5">
 					<div className="flex flex-row items-center gap-3">
-						<div className="flex h-8 w-8 items-center justify-center rounded-full border border-white">
+						<div className="bg-primary-50 flex h-8 w-8 items-center justify-center rounded-full border border-white">
 							<Award className="h-4 w-4" />
 						</div>
 
 						<div className="flex flex-col items-start gap-1">
-							<Label>Upgrade</Label>
-							<Label>Versão Pro</Label>
+							<Label className="font-bold">Upgrade</Label>
+							<div className="text-sm">Versão Pro</div>
 						</div>
 					</div>
 
@@ -119,22 +119,17 @@ export function AppSidebar() {
 							variant="positive"
 							size="sm"
 							onClick={onUpgradeVersion}
-							className="flex w-full items-center justify-start bg-transparent"
+							className="bg-primary-50 hover:bg-primary-50 active:bg-primary-50 flex h-10 w-full justify-center rounded-xl border text-center text-sm"
 						>
 							Fazer Upgrade
 						</Button>
 					</div>
 				</div>
 				<div className="space-y-2 p-2">
-					<Button
-						variant="positive"
-						size="sm"
-						onClick={onConfigureApplication}
-						className="flex w-full items-center justify-start bg-transparent"
-					>
+					<SidebarMenuButton onClick={() => {}}>
 						<Settings className="mr-2 h-4 w-4" />
 						Configurações
-					</Button>
+					</SidebarMenuButton>
 				</div>
 			</SidebarFooter>
 		</Sidebar>

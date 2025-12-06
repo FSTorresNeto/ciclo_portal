@@ -12,6 +12,7 @@ import { Separator } from "./separator";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "./sheet";
 import { Skeleton } from "./skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
+import { PanelLeft } from "lucide-react";
 
 export const SIDEBAR_COOKIE_NAME = "sidebar_state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -237,14 +238,14 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
 			hierarchy="tertiary"
 			size="icon"
 			variant="neutral"
-			className={cn("dark:bg-neutral-70 size-8", className)}
+			className={cn("", className)}
 			onClick={(event) => {
 				onClick?.(event);
 				toggleSidebar();
 			}}
 			{...props}
 		>
-			<TaillessLineArrowShrinkHorizontal1 />
+			<PanelLeft />
 			<span className="sr-only">Toggle Sidebar</span>
 		</Button>
 	);
@@ -279,7 +280,7 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
 	return (
 		<main
 			data-slot="sidebar-inset"
-			className={cn("bg-sidebar relative flex w-full flex-1 flex-col overflow-hidden overflow-y-auto rounded-2xl pt-20", className)}
+			className={cn("bg-sidebar relative mt-20 flex w-full flex-1 flex-col overflow-hidden overflow-y-auto rounded-2xl", className)}
 			{...props}
 		/>
 	);

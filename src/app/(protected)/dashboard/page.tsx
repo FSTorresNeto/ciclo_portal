@@ -11,9 +11,6 @@ export default function DashboardPage() {
 				<AppPageHeaderTitleContainer>
 					<AppPageTitle>Página </AppPageTitle>
 				</AppPageHeaderTitleContainer>
-				<Suspense>
-					<ThemeModeToggle />
-				</Suspense>
 			</AppPageHeader>
 		</AppPage>
 	);

@@ -9,9 +9,9 @@ import { SessionExpirationDialog } from "~/app/(protected)/_components/session-e
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<SidebarProvider className="bg-sidebar">
+			<AppTopbar />
 			<AppSidebar />
 			<SidebarInset>
-				<AppTopbar />
 				<div className="bg-sidebar h-full p-6">{children}</div>
 			</SidebarInset>
 		</SidebarProvider>
