@@ -96,7 +96,6 @@ function FormLabel({ children, className, ...props }: React.ComponentProps<typeo
 			{...props}
 		>
 			{children}
-			{required && <span className="text-negative">*</span>}
 		</Label>
 	);
 }

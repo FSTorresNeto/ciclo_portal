@@ -5,7 +5,7 @@ export function AppPage({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 export function AppPageHeader({ className, ...props }: React.ComponentProps<"head">) {
-	return <header className={cn("px-4 py-2", className)} {...props} />;
+	return <header className={cn("py-2", className)} {...props} />;
 }
 
 export function AppPageHeaderTitleContainer({ className, ...props }: React.ComponentProps<"div">) {

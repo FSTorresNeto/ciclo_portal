@@ -15,9 +15,10 @@ import {
 } from "~/modules/shared/components/ui/sidebar";
 import { Button } from "~/modules/shared/components/ui/button";
 import { Label } from "~/modules/shared/components/ui/label";
-import { Award, Settings, Sparkles, ShoppingCart, ChartColumn, Users, Archive, CreditCard, FileText, Gift } from "lucide-react";
+import { Award, Settings, Sparkles, ShoppingCart, ChartColumn, Users, Archive, CreditCard, FileText, Gift, Sliders } from "lucide-react";
+import { env } from "~/env";
 
-const items = [
+const baseItems = [
 	{
 		title: "PDV Fidelidade",
 		url: "/pdv",
@@ -59,6 +60,14 @@ const items = [
 		icon: Archive,
 	},
 ];
+
+const settingsItem = {
+	title: "Settings - Teste",
+	url: "/settings",
+	icon: Sliders,
+};
+
+const items = env.NEXT_PUBLIC_SHOW_SETTINGS_PAGE === "true" ? [...baseItems, settingsItem] : baseItems;
 
 export function AppSidebar() {
 	const pathname = usePathname();

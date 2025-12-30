@@ -18,6 +18,7 @@ export const env = createEnv({
 	 */
 	client: {
 		NEXT_PUBLIC_API_URL: z.string(),
+		NEXT_PUBLIC_SHOW_SETTINGS_PAGE: z.enum(["true", "false"]).default("false"),
 	},
 
 	/**
@@ -28,6 +29,7 @@ export const env = createEnv({
 		AUTH_SECRET: process.env.AUTH_SECRET,
 		NODE_ENV: process.env.NODE_ENV,
 		NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+		NEXT_PUBLIC_SHOW_SETTINGS_PAGE: process.env.NEXT_PUBLIC_SHOW_SETTINGS_PAGE,
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
